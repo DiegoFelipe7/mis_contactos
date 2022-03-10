@@ -6,7 +6,10 @@ import { useContext } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 const Contactos = ({ contacto }) => {
+  //useNavigate para rediregir a el usaurio
   const navegacion = useNavigate();
+
+  //Creacion del contex con las funciondes usuariostate
   const contactocontex = useContext(ContactosContex);
   const {
     ListarContactos,
@@ -34,11 +37,14 @@ const Contactos = ({ contacto }) => {
   };
 
   const actualizarContacto = (contacto) => {
+    //si el usuario selecciona actalizar proyecto pasamos los datos al state
+    //del proyecto seleccionado
     SeleccionarContacto(contacto);
     navegacion("/actualizar-contacto");
   };
 
   const eliminado_Logico = (contacto) => {
+    //recibimos un contacto y realizamos una validacion para el eliminado
     Swal.fire({
       title: "¿Estas seguro?",
       text: "Estas apunto de realizar un borrado logico",
@@ -50,10 +56,11 @@ const Contactos = ({ contacto }) => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.value) {
-        // pasarlo al state
+        // pasarlo al state con el proyecto a eliminar
         EliminadoLogico(contacto);
       }
     });
+    //listar los contactos
     ListarContactos();
   };
   const { id, nombre, telefono, correo_electronico, fecha_de_nacimiento } =

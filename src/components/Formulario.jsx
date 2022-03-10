@@ -5,7 +5,9 @@ import Guardar from "../icons/Guardar";
 import Actualizar from "../icons/Actualizar";
 import Swal from "sweetalert2";
 const Formulario = ({ tipo }) => {
+  //useNavigate para redireccionar a los usuarios
   const navegacion = useNavigate();
+  //Creacion del contex con las funciondes usuariostate
   const contactocontex = useContext(ContactosContex);
   const {
     AgregarContacto,
@@ -13,19 +15,25 @@ const Formulario = ({ tipo }) => {
     ActualizarContactos,
     CancelarActualizacion,
   } = contactocontex;
+  //fin contex//
+  //creacion del useState con los datos del form//
   const [contactos, setcontactos] = useState({
     nombre: "",
     telefono: "",
     correo_electronico: "",
     fecha_de_nacimiento: "",
   });
+  //fin usestate
+  //extrallendo los datos del arreglo
   const { nombre, telefono, correo_electronico, fecha_de_nacimiento } =
     contactos;
+  //fin
+  //useState para mostar los errores
   const [error, seterror] = useState(false);
+  //Useefecto para llenar los campos del form si selecciona un usario
   useEffect(() => {
     if (seleccion_contacto != null) {
       setcontactos(seleccion_contacto);
-      console.log(seleccion_contacto);
     } else {
       setcontactos({
         nombre: "",
@@ -35,8 +43,10 @@ const Formulario = ({ tipo }) => {
       });
     }
   }, [seleccion_contacto]);
+  //funcion para guardar los datos o actualizarlos
   const saveUsuario = (e) => {
     e.preventDefault();
+    //validacion de los campos
     if (
       nombre.trim() === "" ||
       telefono.trim() === "" ||
@@ -48,6 +58,7 @@ const Formulario = ({ tipo }) => {
         seterror(false);
       }, 3000);
     } else {
+      //validamos si hay un contacto seleccionado
       if (seleccion_contacto != null) {
         Swal.fire({
           title: "¿Estas seguro ?",
@@ -61,8 +72,7 @@ const Formulario = ({ tipo }) => {
         })
           .then((result) => {
             if (result.value) {
-              // pasarlo al stateListarContactos();
-
+              // actualizamos los datos
               contactos.status = 1;
               ActualizarContactos(contactos);
               setcontactos({
@@ -81,6 +91,7 @@ const Formulario = ({ tipo }) => {
             console.log("ocurrio algo" + err);
           });
       } else {
+        //si no hay ningun usuario seleccionad se guardas los nuevos datos del usuarios
         contactos.status = 1;
         AgregarContacto(contactos);
         setcontactos({

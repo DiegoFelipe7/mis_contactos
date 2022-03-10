@@ -11,15 +11,18 @@ import {
 import clienteAxios from "../config/axios";
 import { useReducer } from "react";
 const ContactosState = (props) => {
+  //valores iniciales utilizados para el use dispatchs
   const initialState = {
     contactos: [],
     seleccion_contacto: null,
   };
-
+  //Listar contactactor realizamos una peticion get por medio de axios
+  //y tramos todos los usuario registrado en la basde de datos de heidisql
   const ListarContactos = async () => {
     try {
       const contactos = await clienteAxios.get("/contactos");
-
+      //utlizamos el dispa para enviar el typo y el valor del payload los cuales van a se tratados por
+      //medio de casos en el contactos reducer
       dispatch({
         type: OBTENER_CONTACTOS,
         payload: contactos.data,
@@ -28,10 +31,12 @@ const ContactosState = (props) => {
       console.log(`ocurrio un error ${error}`);
     }
   };
-
+  //Realiasmos un post para enviar nuevos contactos a la bd
   const AgregarContacto = async (contacto) => {
     try {
       const respuesta = await clienteAxios.post("/contactos", contacto);
+      //utlizamos el dispa para enviar el typo y el valor del payload los cuales van a se tratados por
+      //medio de casos en el contactos reducer
       dispatch({
         type: AGREGARCONTACTOS,
         payload: respuesta.data,
@@ -40,7 +45,7 @@ const ContactosState = (props) => {
       console.log(error);
     }
   };
-
+  //eLIMINAR UN USARIO POR MEDIO DEL ID
   const EliminarContacto = async (id) => {
     try {
       const respuesta = await clienteAxios.delete(`contactos/${id}`);
@@ -50,6 +55,7 @@ const ContactosState = (props) => {
       });
     } catch (error) {}
   };
+  //ACTUALIZAR CONTACTO SE RECIBE UN CONTACTO
   const ActualizarContactos = async (contacto) => {
     try {
       const respuesta = await clienteAxios.put(
@@ -64,18 +70,21 @@ const ContactosState = (props) => {
       console.log(error);
     }
   };
+  //Seleccion del proyecto a editar
   const SeleccionarContacto = (contacto) => {
     dispatch({
       type: SELECCIONARCONTACTO,
       payload: contacto,
     });
   };
+  //cancelar la actualizacion para liimpiar el proyecto seleccionado
   const CancelarActualizacion = () => {
     dispatch({
       type: CANCELAR_ACTUALIZACION,
       payload: null,
     });
   };
+  //eliminado logico para cambiar el estado de un contacto
   const EliminadoLogico = async (contacto) => {
     contacto.status = "0";
     try {

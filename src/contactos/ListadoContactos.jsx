@@ -2,8 +2,11 @@ import { useContext, useEffect } from "react";
 import ContactosContex from "../contex/ContactosContex";
 import Contactos from "../components/Contactos";
 const ListadoContactos = () => {
+  //Creacion del contex con las funciondes usuariostate
   const contactocontex = useContext(ContactosContex);
   const { contactos, ListarContactos } = contactocontex;
+  //utlizamos el usefecto para detonar cualquier cambio que pueda surgir  en el listado
+  //de los usuarios para que vualva a ejecutar la funcion
   useEffect(() => {
     ListarContactos();
   }, [ListarContactos]);
