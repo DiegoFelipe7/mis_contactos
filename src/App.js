@@ -1,24 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ContactosState from "./contex/ContactosState";
+import Menu from "./Layout/Menu";
+import NuevoContacto from "./contactos/NuevoContaco";
+import ListadoContactos from "./contactos/ListadoContactos";
+import ActualizarContacto from "./contactos/ActualizarContacto";
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <ContactosState>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Menu />}>
+              <Route index element={<ListadoContactos />} />
+              <Route path="/nuevo-contacto" element={<NuevoContacto />} />
+              <Route
+                path="/actualizar-contacto"
+                element={<ActualizarContacto />}
+              />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </ContactosState>
+    </>
   );
 }
 
