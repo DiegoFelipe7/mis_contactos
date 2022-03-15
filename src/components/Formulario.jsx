@@ -14,6 +14,10 @@ const Formulario = ({ tipo }) => {
     seleccion_contacto,
     ActualizarContactos,
     CancelarActualizacion,
+    ActualizarNombre,
+    ActualizarTelefono,
+    ActualizarCorreo,
+    ActualizarFecha,
   } = contactocontex;
   //fin contex//
   //creacion del useState con los datos del form//
@@ -60,36 +64,56 @@ const Formulario = ({ tipo }) => {
     } else {
       //validamos si hay un contacto seleccionado
       if (seleccion_contacto != null) {
-        Swal.fire({
-          title: "¿Estas seguro ?",
-          text: "Una vez actualizado se perdera la informacion anterior",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Si, actualizar",
-          cancelButtonText: "Cancelar",
-        })
-          .then((result) => {
-            if (result.value) {
-              // actualizamos los datos
-              contactos.status = 1;
-              ActualizarContactos(contactos);
-              setcontactos({
-                nombre: "",
-                telefono: "",
-                correo_electronico: "",
-                fecha_de_nacimiento: "",
-              });
-              navegacion("/");
-            } else {
-              CancelarActualizacion();
-              navegacion("/");
-            }
+        if (seleccion_contacto.nombre !== nombre) {
+          ActualizarNombre(contactos);
+        }
+        if (seleccion_contacto.telefono !== telefono) {
+          ActualizarTelefono(contactos);
+        }
+        if (seleccion_contacto.correo_electronico !== correo_electronico) {
+          ActualizarCorreo(contactos);
+        }
+        if (seleccion_contacto.fecha_de_nacimiento !== fecha_de_nacimiento) {
+          ActualizarFecha(contactos);
+        }
+
+        if (
+          seleccion_contacto.nombre !== nombre ||
+          seleccion_contacto.telefono !== telefono ||
+          seleccion_contacto.correo_electronico !== correo_electronico ||
+          seleccion_contacto.fecha_de_nacimiento !== fecha_de_nacimiento
+        ) {
+          Swal.fire({
+            title: "¿Estas seguro ?",
+            text: "Una vez actualizado se perdera la informacion anterior",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si, actualizar",
+            cancelButtonText: "Cancelar",
           })
-          .catch((err) => {
-            console.log("ocurrio algo" + err);
-          });
+            .then((result) => {
+              if (result.value) {
+                // actualizamos los datos
+                contactos.status = 1;
+                ActualizarContactos(contactos);
+                setcontactos({
+                  nombre: "",
+                  telefono: "",
+                  correo_electronico: "",
+                  fecha_de_nacimiento: "",
+                });
+                navegacion("/");
+              } else {
+                CancelarActualizacion();
+                navegacion("/");
+              }
+            })
+            .catch((err) => {
+              console.log("ocurrio algo" + err);
+            });
+        }
       } else {
         //si no hay ningun usuario seleccionad se guardas los nuevos datos del usuarios
         contactos.status = 1;
